@@ -1,35 +1,41 @@
 # Calendar Task Manager
 
-A simple **Drag & Drop Calendar Task Manager** built using **React**, **Vite**, and **Tailwind CSS**.
+A simple and interactive **Drag & Drop Calendar Task Manager** built using **React**, **Vite**, and **Tailwind CSS**.
 
-This application allows users to drag tasks from a task list and drop them onto specific dates in a calendar. The assigned tasks are displayed directly inside the selected date cell, and the entire functionality is handled locally without any backend integration.
+This application allows users to manage tasks visually by dragging tasks from a pending task list and dropping them onto specific dates in a calendar. Users can also create custom tasks, delete tasks, and persist all task data locally using **localStorage** — all without any backend integration.
 
 ---
 
-## 🚀 Features
+## Features
 
 - Display a monthly calendar with selectable dates
-- Show a task list beside the calendar
+- Show a pending task list beside the calendar
 - Drag tasks and drop them onto specific dates
-- Display assigned tasks inside the selected date cell
+- Remove tasks from the pending list once assigned
+- Display assigned tasks directly inside calendar date cells
 - Delete assigned tasks from the calendar
+- Restore deleted calendar tasks back to the pending task list
+- Add custom tasks manually using an input field
+- Delete pending tasks directly from the sidebar
 - Prevent duplicate task assignment on the same date
-- Month navigation (Previous / Next)
-- Fully local state management (no backend)
+- Navigate between months (Previous / Next)
+- Persist tasks and assignments using localStorage
+- Fully frontend-only implementation (no backend)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React**
 - **Vite**
 - **Tailwind CSS**
 - **JavaScript**
 - **HTML5 Drag and Drop API**
+- **localStorage**
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```bash
 src/
