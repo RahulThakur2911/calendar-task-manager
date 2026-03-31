@@ -1,49 +1,86 @@
 import React from "react";
-import { formatDateKey } from "../../utils/calendar";
+import { formatDateKey, isSameDate } from "../../utils/calendar";
 
-const DayCell = ({ day, tasksByDate, onDropTask, selectedDate, setSelectedDate }) => {
-  if (!day) {
-    return <div className="bg-gray-100 rounded-xl min-h-[120px]"></div>;
+const DayCell = ({
+  day,
+  tasksByDate,
+  onDropTask,
+  onDeleteTask,
+  selectedDate,
+  setSelectedDate,
+}) => {
+  const actualDate = day?.date;
+  const isCurrentMonth = day?.currentMonth;
+
+  if (!actualDate) {
+    return null;
   }
 
-  const dateKey = formatDateKey(day);
-  const dayTasks = tasksByDate[dateKey] || [];
+  const dateKey = formatDateKey(actualDate);
+  const dayTasks = tasksByDate?.[dateKey] || [];
 
-  const isSelected =
-    selectedDate && formatDateKey(selectedDate) === dateKey;
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+  const today = new Date();
+  const isToday = isSameDate(today, actualDate);
+  const isSelected = selectedDate && isSameDate(selectedDate, actualDate);
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const taskData = JSON.parse(e.dataTransfer.getData("task"));
-    onDropTask(taskData, dateKey);
+    const task = JSON.parse(e.dataTransfer.getData("task"));
+    onDropTask(task, dateKey);
   };
 
   return (
     <div
-      onClick={() => setSelectedDate(day)}
-      onDragOver={handleDragOver}
+      onClick={() => setSelectedDate(actualDate)}
+      onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
-      className={`rounded-xl min-h-[120px] p-2 border transition cursor-pointer ${
-        isSelected
-          ? "bg-blue-50 border-blue-500"
-          : "bg-white border-gray-200 hover:border-blue-300"
-      }`}
+      className={`rounded-xl min-h-[95px] sm:min-h-[115px] p-2 sm:p-3 border cursor-pointer transition-all box-border
+        ${
+          isSelected
+            ? "bg-blue-50 border-blue-500 shadow-sm"
+            : isCurrentMonth
+            ? "bg-white border-gray-200 hover:border-blue-300 hover:shadow-sm"
+            : "bg-gray-100 border-gray-200 text-gray-400"
+        }
+        ${isToday ? "ring-2 ring-indigo-400" : ""}
+      `}
     >
+      {/* Date Header */}
       <div className="flex justify-between items-center mb-2">
-        <span className="font-semibold text-gray-700">{day.getDate()}</span>
+        <span
+          className={`text-xs sm:text-sm font-semibold ${
+            isCurrentMonth ? "text-gray-700" : "text-gray-400"
+          }`}
+        >
+          {actualDate.getDate()}
+        </span>
+
+        {isToday && (
+          <span className="text-[10px] text-indigo-500 font-semibold">
+            Today
+          </span>
+        )}
       </div>
 
-      <div className="space-y-2">
-        {dayTasks.map((task, index) => (
+      <div className="space-y-1">
+        {dayTasks.map((task) => (
           <div
-            key={`${task.id}-${index}`}
-            className="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded-lg truncate"
+            key={task.id}
+            className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-lg flex justify-between items-center gap-2"
           >
-            {task.title}
+            <span className="truncate block flex-1">{task.title}</span>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteTask(dateKey, task.id);
+              }}
+              className="text-red-500 hover:text-red-700 text-xs font-bold shrink-0"
+              title="Remove task"
+            >
+              ✕
+            </button>
           </div>
         ))}
       </div>
