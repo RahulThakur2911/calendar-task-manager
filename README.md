@@ -30,7 +30,7 @@ This application allows users to manage tasks visually by dragging tasks from a 
 - **Vite**
 - **Tailwind CSS**
 - **JavaScript**
-- **HTML5 Drag and Drop API**
+- **HTML5**
 - **localStorage**
 
 ---
